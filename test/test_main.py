@@ -1,4 +1,4 @@
-from pyex import pyex
+from imrec import imrec
 
 def test_sqr():
-    assert pyex.sqr(2) == 4
+    assert imrec.sqr(2) == 4
