@@ -10,7 +10,7 @@ def parse_args():
   """
   parser = argparse.ArgumentParser(description="Program for recommending images")
 
-  subparsers = parser.add_subparsers()
+  subparsers = parser.add_subparsers(required=True, dest='sub_command')
 
   # Score parser
   score_parser = subparsers.add_parser('score', help='obtain score of image')
