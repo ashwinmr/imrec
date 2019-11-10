@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
 
 def sqr(n):
   """ Find square of a number
@@ -55,6 +56,14 @@ def crop_center_square(img):
 
   return img_crp
 
+def get_paths_from_dir(directory):
+  """ Function to get file paths from a directory
+  """
+  paths = []
+  for file in os.listdir(directory):
+    paths.append(os.path.join(directory,file))
+
+  return paths
 def score(args):
   """ Function to determine score of an image
   """
