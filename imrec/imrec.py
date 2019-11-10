@@ -64,6 +64,22 @@ def get_paths_from_dir(directory):
     paths.append(os.path.join(directory,file))
 
   return paths
+
+def create_img_array(img_paths, size):
+  """ Function to create an array of images of same size
+  """
+  imgs = []
+  for img_path in img_paths:
+    img = cv2.imread(img_path)
+    img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+    img = resize_image(img,100)
+    img = crop_center_square(img)
+    imgs.append(img)
+
+  imgs = np.array(imgs)
+
+  return imgs
+
 def score(args):
   """ Function to determine score of an image
   """
