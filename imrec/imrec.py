@@ -23,6 +23,21 @@ def parse_args():
 
   return parser.parse_args()
 
+def resize_image(img, size):
+  """ Function to resize smaller dimension of image to the input size.
+  Keep aspect ratio.
+  """
+
+  height, width = img.shape[:2]
+
+  # Resize smaller dimension to input size and keep aspect ratio
+  if height < width:
+    img_res = cv2.resize(img,(math.floor(size*(width/height)),size))
+  else:
+    img_res = cv2.resize(img,(size,math.floor(size*(height/width))))
+
+  return img_res
+
 def score(args):
   """ Function to determine score of an image
   """
