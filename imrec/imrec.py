@@ -38,6 +38,23 @@ def resize_image(img, size):
 
   return img_res
 
+def crop_center_square(img):
+  """ Function to crop an image from center into a square of smaller dimension
+  """
+
+  height, width = img.shape[:2]
+
+  if height < width:
+    start = math.floor((width-height)/2)
+    end = start + height
+    img_crp = img[:,start:end,:]
+  else:
+    start = math.floor((height-width)/2)
+    end = start + width
+    img_crp = img[start:end,:,:]
+
+  return img_crp
+
 def score(args):
   """ Function to determine score of an image
   """
