@@ -80,6 +80,14 @@ def create_img_array(img_paths, size):
 
   return imgs
 
+def get_score_for_image(img):
+  """ Function to obtain the score for an image from user input
+  """
+  plt.imshow(img)
+  plt.show()
+  score = int(input("Enter score out of 10 for image:\n"))
+  return score
+
 def score(args):
   """ Function to determine score of an image
   """
