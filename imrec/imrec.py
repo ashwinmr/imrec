@@ -34,6 +34,12 @@ def parse_args():
   train_parser.add_argument('model_path', help='path to save trained model')
   train_parser.set_defaults(func=train)
 
+  # Load parser
+  load_parser = subparsers.add_parser('load', help='load data into a dataset')
+  load_parser.add_argument('image_dir', help='directory of images')
+  load_parser.add_argument('dataset_path', help='path to save dataset')
+  load_parser.set_defaults(func=load)
+
   return parser.parse_args()
 
 def resize_image(img, size):
@@ -99,29 +105,6 @@ def get_score_for_image(img):
   plt.show()
   score = int(input("Enter score out of 10 for image:\n"))
   return score
-
-def create_dataset(directory, save_path):
-  """ create a dataset from images in a directory
-  """
-
-  # Get images
-  img_paths = get_paths_from_dir(directory)
-  imgs = create_img_array(img_paths,100)
-
-  # Get scores
-  scores = []
-  for img in imgs:
-    scores.append(get_score_for_image(img))
-
-  scores = np.array(scores)
-
-  # Create dictionary of images and scores
-  data = {'images':imgs,'scores':scores}
-
-  # Save the data
-  pickle.dump(data,open(save_path,"wb"))
-
-  return
 
 def get_dataset_indexes(size, split = [60,20,20]):
   """ get random indexes corresponding to training, validation and test sets
@@ -245,6 +228,32 @@ def train(args):
 
   # create and train the model
   train_model(x_train, y_train, model_path)
+
+  return
+
+def load(args):
+  """ Load images into a dataset
+  """
+
+  image_dir = args.image_dir
+  dataset_path = args.dataset_path
+
+  # Get images
+  img_paths = get_paths_from_dir(image_dir)
+  imgs = create_img_array(img_paths,100)
+
+  # Get scores
+  scores = []
+  for img in imgs:
+    scores.append(get_score_for_image(img))
+
+  scores = np.array(scores)
+
+  # Create dictionary of images and scores
+  data = {'images':imgs,'scores':scores}
+
+  # Save the data
+  pickle.dump(data,open(dataset_path,"wb"))
 
   return
 
