@@ -89,6 +89,10 @@ def create_img_array(img_paths, size = 100):
   imgs = []
   for img_path in img_paths:
     img = cv2.imread(img_path)
+
+    if img is None:
+      continue
+
     img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
     img = resize_image(img,size)
     img = crop_center_square(img)
