@@ -25,6 +25,7 @@ def parse_args():
   # Score parser
   score_parser = subparsers.add_parser('score', help='obtain score of image')
   score_parser.add_argument('image_path', help='path to image file')
+  score_parser.add_argument('model_path', help='path to trained model')
   score_parser.set_defaults(func=score)
 
   return parser.parse_args()
@@ -70,14 +71,14 @@ def get_paths_from_dir(directory):
 
   return paths
 
-def create_img_array(img_paths, size):
+def create_img_array(img_paths, size = 100):
   """ Function to create an array of images of same size
   """
   imgs = []
   for img_path in img_paths:
     img = cv2.imread(img_path)
     img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-    img = resize_image(img,100)
+    img = resize_image(img,size)
     img = crop_center_square(img)
     imgs.append(img)
 
@@ -173,11 +174,61 @@ def train_model(x_train,y_train, save_path = 'temp/model.h5'):
   # Save the model
   model.save(save_path)
 
+def normalize_images(imgs):
+  """ Normalize images for learning
+  """
+
+  imgs_norm = imgs/255.0 - 0.5
+
+  return imgs_norm
+
+def denormalize_images(imgs_norm):
+  """ De normalize images for plotting
+  """
+
+  imgs = (imgs_norm + 0.5) * 255.0
+
+  return imgs
+
+def scale_scores(scores):
+  """ Scale the scores for learning
+  """
+
+  scores_scl = scores / 10.0
+
+  return scores_scl
+
+def descale_scores(scores_scl):
+  """ De scale the scores for output
+  """
+
+  scores = scores_scl * 10.0
+
+  return scores
+
 def score(args):
   """ Function to determine score of an image
   """
 
-  return 10
+  image_path = args.image_path
+  model_path = args.model_path
+
+  # Load the trained model
+  model = load_model(model_path)
+
+  # Load the image for ML model
+  imgs = create_img_array([image_path])
+
+  # Normalize the image
+  imgs = normalize_images(imgs)
+
+  # Predict
+  pred = model.predict(imgs)
+
+  # Descale output
+  scores = descale_scores(pred)
+
+  return scores[0][0]
 
 def main():
 
