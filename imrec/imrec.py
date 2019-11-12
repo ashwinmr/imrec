@@ -1,3 +1,4 @@
+import sys
 import argparse
 import cv2
 import numpy as np
@@ -7,6 +8,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.models import load_model
 import os
+import pickle
 
 def sqr(n):
   """ Find square of a number
