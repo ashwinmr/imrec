@@ -132,6 +132,31 @@ def get_dataset_indexes(size, split = [60,20,20]):
 
   return idx_train, idx_val, idx_test
 
+def get_datasets(dataset_path):
+  """ get trainging, validation and test datasets from the dataset file
+  """
+
+  # Load dataset
+  data = pickle.load(open(dataset_path,"rb"))
+
+  imgs = data['images']
+  scores = data['scores']
+
+  # Create datasets
+  size = len(imgs)
+  idx_train, idx_val, idx_test = get_dataset_indexes(size)
+
+  x_train = imgs[idx_train] / 255.0 - 0.5
+  y_train = scores[idx_train] / 10.0
+
+  x_val = imgs[idx_val] / 255.0 - 0.5
+  y_val = scores[idx_val] / 10.0
+
+  x_test = imgs[idx_test] / 255.0 - 0.5
+  y_test = scores[idx_test] / 10.0
+
+  return x_train, y_train, x_val, y_val, x_test, y_test
+
 def train_model(x_train,y_train, save_path = 'temp/model.h5'):
 
   # Create ML model
