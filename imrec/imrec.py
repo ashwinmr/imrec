@@ -249,7 +249,11 @@ def load(args):
   # Get scores
   scores = []
   for img in imgs:
-    scores.append(get_score_for_image(img))
+    try:
+      scores.append(get_score_for_image(img))
+    except ValueError:
+      imgs = imgs[0:len(scores)]
+      break
 
   scores = np.array(scores)
 
