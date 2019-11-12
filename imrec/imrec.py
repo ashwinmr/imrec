@@ -94,8 +94,8 @@ def get_score_for_image(img):
   score = int(input("Enter score out of 10 for image:\n"))
   return score
 
-def create_data_set(directory, save_path = 'temp/dataset.p'):
-  """ Function to create a dataset from images in a directory
+def create_dataset(directory, save_path):
+  """ create a dataset from images in a directory
   """
 
   # Get images
@@ -133,8 +133,8 @@ def get_dataset_indexes(size, split = [60,20,20]):
 
   return idx_train, idx_val, idx_test
 
-def get_datasets(dataset_path):
-  """ get trainging, validation and test datasets from the dataset file
+def get_training_set(dataset_path):
+  """ get training set from the dataset file
   """
 
   # Load dataset
@@ -143,22 +143,17 @@ def get_datasets(dataset_path):
   imgs = data['images']
   scores = data['scores']
 
-  # Create datasets
-  size = len(imgs)
-  idx_train, idx_val, idx_test = get_dataset_indexes(size)
+  # Normalize images
+  x_train = normalize_images(imgs)
 
-  x_train = imgs[idx_train] / 255.0 - 0.5
-  y_train = scores[idx_train] / 10.0
+  # Scale scores
+  y_train = scale_scores(scores)
 
-  x_val = imgs[idx_val] / 255.0 - 0.5
-  y_val = scores[idx_val] / 10.0
+  return x_train, y_train
 
-  x_test = imgs[idx_test] / 255.0 - 0.5
-  y_test = scores[idx_test] / 10.0
-
-  return x_train, y_train, x_val, y_val, x_test, y_test
-
-def train_model(x_train,y_train, save_path = 'temp/model.h5'):
+def train_model(x_train,y_train, save_path):
+  """ Create a model and train it
+  """
 
   # Create ML model
   model = Sequential()
@@ -228,12 +223,15 @@ def score(args):
   # Descale output
   scores = descale_scores(pred)
 
-  return scores[0][0]
+  print(scores[0][0])
+
+  return
+
 
 def main():
 
   args = parse_args()
-  print(args.func(args))
+  args.func(args)
 
 if __name__ == "__main__":
   main()
