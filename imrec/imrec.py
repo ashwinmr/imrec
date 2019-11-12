@@ -111,6 +111,22 @@ def create_data_set(directory, save_path = 'temp/dataset.p'):
 
   return
 
+def get_dataset_indexes(size, split = [60,20,20]):
+  """ get random indexes corresponding to training, validation and test sets
+  for a given dataset size
+  """
+  idx = np.arange(size)
+  np.random.shuffle(idx)
+
+  train_end = math.floor(split[0]*size/100)
+  val_end = math.floor((split[0]+split[1])*size/100)
+
+  idx_train = idx[0:train_end]
+  idx_val = idx[train_end:val_end]
+  idx_test = idx[val_end::]
+
+  return idx_train, idx_val, idx_test
+
 def score(args):
   """ Function to determine score of an image
   """
