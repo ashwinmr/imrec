@@ -3,6 +3,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from keras.models import Sequential
+from keras.layers.core import Dense, Activation, Flatten
+from keras.models import load_model
 import os
 
 def sqr(n):
@@ -126,6 +129,22 @@ def get_dataset_indexes(size, split = [60,20,20]):
   idx_test = idx[val_end::]
 
   return idx_train, idx_val, idx_test
+
+def train_model(x_train,y_train, save_path = 'temp/model.h5'):
+
+  # Create ML model
+  model = Sequential()
+  model.add(Flatten(input_shape=x_train[0].shape))
+  model.add(Dense(1,activation = 'sigmoid'))
+
+  # Train the model
+  model.compile(loss='binary_crossentropy',
+                optimizer='sgd',
+                metrics=['accuracy'])
+  model.fit(x_train, y_train)
+
+  # Save the model
+  model.save(save_path)
 
 def score(args):
   """ Function to determine score of an image
