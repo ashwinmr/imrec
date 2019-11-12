@@ -28,6 +28,12 @@ def parse_args():
   score_parser.add_argument('model_path', help='path to trained model')
   score_parser.set_defaults(func=score)
 
+  # Train parser
+  train_parser = subparsers.add_parser('train', help='train a model using a dataset')
+  train_parser.add_argument('dataset_path', help='path to dataset')
+  train_parser.add_argument('model_path', help='path to save trained model')
+  train_parser.set_defaults(func=train)
+
   return parser.parse_args()
 
 def resize_image(img, size):
@@ -227,6 +233,20 @@ def score(args):
 
   return
 
+def train(args):
+  """ Function to train a model with data
+  """
+
+  dataset_path = args.dataset_path
+  model_path = args.model_path
+
+  # Get training set
+  x_train, y_train = get_training_set(dataset_path)
+
+  # create and train the model
+  train_model(x_train, y_train, model_path)
+
+  return
 
 def main():
 
