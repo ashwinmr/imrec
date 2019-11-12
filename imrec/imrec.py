@@ -88,6 +88,29 @@ def get_score_for_image(img):
   score = int(input("Enter score out of 10 for image:\n"))
   return score
 
+def create_data_set(directory, save_path = 'temp/dataset.p'):
+  """ Function to create a dataset from images in a directory
+  """
+
+  # Get images
+  img_paths = get_paths_from_dir(directory)
+  imgs = create_img_array(img_paths,100)
+
+  # Get scores
+  scores = []
+  for img in imgs:
+    scores.append(get_score_for_image(img))
+
+  scores = np.array(scores)
+
+  # Create dictionary of images and scores
+  data = {'images':imgs,'scores':scores}
+
+  # Save the data
+  pickle.dump(data,open(save_path,"wb"))
+
+  return
+
 def score(args):
   """ Function to determine score of an image
   """
