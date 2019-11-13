@@ -162,7 +162,7 @@ def train_model(x_train,y_train, save_path):
   model.compile(optimizer='rmsprop',
                 loss='binary_crossentropy',
                 metrics=['accuracy'])
-  model.fit(x_train, y_train)
+  model.fit(x_train, y_train, epochs=3, validation_split = 0.2)
 
   # Save the model
   model.save(save_path)
