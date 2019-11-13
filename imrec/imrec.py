@@ -159,8 +159,8 @@ def train_model(x_train,y_train, save_path):
   model.add(Dense(1,activation = 'sigmoid'))
 
   # Train the model
-  model.compile(loss='binary_crossentropy',
-                optimizer='sgd',
+  model.compile(optimizer='rmsprop',
+                loss='binary_crossentropy',
                 metrics=['accuracy'])
   model.fit(x_train, y_train)
 
