@@ -42,6 +42,11 @@ The model will then be saved to a provided h5 file.
 imrec train <path/to/dataset.p> <path/to/save/model.h5>
 ```
 
+You can evaluate the model against a dataset
+```
+imrec eval <path/to/dataset.p> <path/to/model.h5>
+```
+
 ## Score an image
 
 You can use the trained model to score an input image.  

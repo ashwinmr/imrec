@@ -48,7 +48,7 @@ def parse_args():
   # Eval parser
   eval_parser = subparsers.add_parser('eval', help='eval a model using a dataset')
   eval_parser.add_argument('dataset_path', help='path to dataset')
-  eval_parser.add_argument('model_path', help='path to save evaled model')
+  eval_parser.add_argument('model_path', help='path to saved model')
   eval_parser.set_defaults(func=eval)
 
   return parser.parse_args()
