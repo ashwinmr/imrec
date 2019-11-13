@@ -160,9 +160,10 @@ def train_model(x_train,y_train, save_path):
   """
 
   # Create ML model
-  model = Sequential()
-  model.add(Flatten(input_shape=x_train[0].shape))
-  model.add(Dense(1,activation = 'sigmoid'))
+  model = Sequential([
+    Flatten(input_shape=x_train[0].shape),
+    Dense(1,activation='sigmoid'),
+  ])
 
   # Train the model
   model.compile(optimizer='rmsprop',
