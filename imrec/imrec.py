@@ -45,6 +45,12 @@ def parse_args():
   view_parser.add_argument('dataset_path', help='path to dataset')
   view_parser.set_defaults(func=view)
 
+  # Eval parser
+  eval_parser = subparsers.add_parser('eval', help='eval a model using a dataset')
+  eval_parser.add_argument('dataset_path', help='path to dataset')
+  eval_parser.add_argument('model_path', help='path to save evaled model')
+  eval_parser.set_defaults(func=eval)
+
   return parser.parse_args()
 
 def resize_image(img, size):
@@ -237,6 +243,30 @@ def train(args):
 
   # create and train the model
   train_model(x_train, y_train, model_path)
+
+  return
+
+def eval(args):
+  """ evaluate the model in test mode using a dataset
+  """
+
+  dataset_path = args.dataset_path
+  model_path = args.model_path
+
+  # Load the trained model
+  model = load_model(model_path)
+
+  # Get data set
+  x_train, y_train = get_training_set(dataset_path)
+
+  # Evluate the model
+  metrics = model.evaluate(x_train, y_train)
+
+  # Display results
+  for metric_i in range(len(model.metrics_names)):
+      metric_name = model.metrics_names[metric_i]
+      metric_value = metrics[metric_i]
+      print('{}: {}'.format(metric_name, metric_value))
 
   return
 
