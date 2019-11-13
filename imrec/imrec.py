@@ -40,6 +40,11 @@ def parse_args():
   load_parser.add_argument('dataset_path', help='path to save dataset')
   load_parser.set_defaults(func=load)
 
+  # View parser
+  view_parser = subparsers.add_parser('view', help='view data in a dataset')
+  view_parser.add_argument('dataset_path', help='path to dataset')
+  view_parser.set_defaults(func=view)
+
   return parser.parse_args()
 
 def resize_image(img, size):
@@ -262,6 +267,39 @@ def load(args):
 
   # Save the data
   pickle.dump(data,open(dataset_path,"wb"))
+
+  return
+
+def view(args):
+  """ View data in a dataset
+  """
+
+  dataset_path = args.dataset_path
+
+  # Load dataset
+  data = pickle.load(open(dataset_path,"rb"))
+
+  imgs = data['images']
+  scores = data['scores']
+
+  # Create grid
+  size = len(imgs)
+  cols = math.ceil(np.sqrt(size))
+  rows = math.ceil(size/cols)
+
+  # Plot all images
+  f, axarr = plt.subplots(rows,cols)
+
+  for row in range(rows):
+    for col in range(cols):
+      idx = cols*row + col
+      ax = axarr[row,col]
+      ax.axis('off')
+      if idx < size:
+        ax.imshow(imgs[idx])
+        ax.set_title(scores[idx],fontsize='x-small')
+
+  plt.show()
 
   return
 
